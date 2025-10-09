@@ -1,15 +1,18 @@
 {
   "name": "n8n-nodes-goldylocks",
   "version": "0.1.0",
-  "description": "",
+  "description": "n8n community node for Goldylocks ERP integration",
   "keywords": [
-    "n8n-community-node-package"
+    "n8n-community-node-package",
+    "goldylocks",
+    "erp",
+    "integration"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/goldylocks-portugal/n8n-goldylocks-node",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "Goldylocks Portugal",
+    "email": "support@goldylocks.pt"
   },
   "repository": {
     "type": "git",
@@ -33,12 +36,10 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
-      "dist/credentials/ExampleCredentialsApi.credentials.js",
-      "dist/credentials/HttpBinApi.credentials.js"
+      "dist/credentials/GoldylocksApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/ExampleNode/ExampleNode.node.js",
-      "dist/nodes/HttpBin/HttpBin.node.js"
+      "dist/nodes/Goldylocks/Goldylocks.node.js"
     ]
   },
   "devDependencies": {

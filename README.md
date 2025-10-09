@@ -1,12 +1,15 @@
-![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+![n8n.io - Workflow Automation](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
 
-# n8n-nodes-starter
+# n8n-nodes-goldylocks
 
-This repo contains example nodes to help you get started building your own custom integrations for [n8n](https://n8n.io). It includes the node linter and other dependencies.
+This repository contains a custom n8n node that integrates with the [Goldylocks ERP system](https://www.goldylocks.pt/). The node allows n8n workflows to interact with Goldylocks data including customers, items, documents, and document lines.
 
-To make your custom node available to the community, you must create it as an npm package, and [submit it to the npm registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
+## Features
 
-If you would like your node to be available on n8n cloud you can also [submit your node for verification](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/).
+- **Customer Management**: Create, update, retrieve, delete, and list customers with fields like name, NIF, address, and contact information
+- **Item Management**: Create, update, retrieve, delete, and list items with detailed attributes like barcode, name, price, tax, and family ID
+- **Document Management**: Create, retrieve, list, and cancel documents with support for filtering by status and date range
+- **Document Line Management**: Create, retrieve, and delete document lines with quantity and pricing information
 
 ## Prerequisites
 
@@ -18,31 +21,79 @@ You need the following installed on your development machine:
   ```
   npm install n8n -g
   ```
-* Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
 
-## Using this starter
+## Installation
 
-These are the basic steps for working with the starter. For detailed guidance on creating and publishing nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).
+To use this node in your n8n instance:
 
-1. [Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template repository.
-2. Clone your new repo:
+1. Install the package in your n8n working directory:
    ```
-   git clone https://github.com/<your organization>/<your-repo-name>.git
+   npm install n8n-nodes-goldylocks
    ```
-3. Run `npm i` to install dependencies.
-4. Open the project in your editor.
-5. Browse the examples in `/nodes` and `/credentials`. Modify the examples, or replace them with your own nodes.
-6. Update the `package.json` to match your details.
-7. Run `npm run lint` to check for errors or `npm run lintfix` to automatically fix errors when possible.
-8. Test your node locally. Refer to [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) for guidance.
-9. Replace this README with documentation for your node. Use the [README_TEMPLATE](README_TEMPLATE.md) to get started.
-10. Update the LICENSE file to use your details.
-11. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
 
-## More information
+2. Restart n8n to load the new node.
 
-Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
+## Configuration
+
+1. In n8n, go to Credentials and create a new "Goldylocks API" credential
+2. Enter your Goldylocks instance Base URL (typically in the format `https://app.goldylocks.pt/yourcompany/api`)
+3. Enter your API Key for authentication
+4. Test the connection to ensure it's working properly
+
+## Usage
+
+This node supports multiple resources and operations:
+
+### Items
+- **Operations**: Create/Update (upsert), Delete, Get, Get All
+- **Key fields**: Barcode ID (cod_barras), name (nome), family ID (familia), cost price (preco_custo), tax (imposto)
+- **Filters**: Search text, active status, family ID for Get All operations
+
+### Customers
+- **Operations**: Create/Update (upsert), Delete, Get, Get All
+- **Key fields**: Name (nome), tax ID (nif), address (morada), postal code (cp), email, mobile phone (telemovel)
+- **Filters**: Search text for Get All operations
+
+### Documents
+- **Operations**: Create, Get, Get All, Anul (cancel)
+- **Create fields**: Customer ID, document type, document series
+- **Filters**: Status (Open/Finished/Anulled), customer ID, date range for Get All operations
+
+### Document Lines
+- **Operations**: Create, Delete, Get All from Document
+- **Key fields**: Document ID, item ID, quantity, price, discount
+
+## Development
+
+If you want to contribute or modify this node:
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/goldylocks-portugal/n8n-goldylocks-node.git
+   ```
+
+2. Install dependencies:
+   ```
+   npm install
+   ```
+
+3. Make your changes to the node definition in `nodes/Goldylocks/Goldylocks.node.ts`
+
+4. Build the project:
+   ```
+   npm run build
+   ```
+
+5. Test your changes locally by linking the package to your n8n instance
+
+## Contributing
+
+If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
 
 ## License
 
 [MIT](https://github.com/n8n-io/n8n-nodes-starter/blob/master/LICENSE.md)
+
+## Support
+
+For support with this node, please open an issue in the GitHub repository. For Goldylocks ERP API questions, please contact Goldylocks support directly.

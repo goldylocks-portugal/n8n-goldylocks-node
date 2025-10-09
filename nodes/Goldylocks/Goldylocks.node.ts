@@ -64,6 +64,7 @@ export class Goldylocks implements INodeType {
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				displayOptions: {
 					show: {
 						resource: ['item'],
@@ -71,7 +72,7 @@ export class Goldylocks implements INodeType {
 				},
 				options: [
 					{
-						name: 'Create/Update',
+						name: 'Create or Update',
 						value: 'upsert',
 						action: 'Create or update an item',
 					},
@@ -86,9 +87,9 @@ export class Goldylocks implements INodeType {
 						action: 'Get an item by ID',
 					},
 					{
-						name: 'Get All',
+						name: 'Get Many',
 						value: 'getAll',
-						action: 'Get all items',
+						action: 'Get many items',
 					},
 				],
 				default: 'getAll',
@@ -98,6 +99,7 @@ export class Goldylocks implements INodeType {
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				displayOptions: {
 					show: {
 						resource: ['customer'],
@@ -105,7 +107,7 @@ export class Goldylocks implements INodeType {
 				},
 				options: [
 					{
-						name: 'Create/Update',
+						name: 'Create or Update',
 						value: 'upsert',
 						action: 'Create or update a customer',
 					},
@@ -120,9 +122,9 @@ export class Goldylocks implements INodeType {
 						action: 'Get a customer by ID',
 					},
 					{
-						name: 'Get All',
+						name: 'Get Many',
 						value: 'getAll',
-						action: 'Get all customers',
+						action: 'Get many customers',
 					},
 				],
 				default: 'getAll',
@@ -132,6 +134,7 @@ export class Goldylocks implements INodeType {
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				displayOptions: {
 					show: {
 						resource: ['document'],
@@ -149,9 +152,9 @@ export class Goldylocks implements INodeType {
 						action: 'Get document details',
 					},
 					{
-						name: 'Get All',
+						name: 'Get Many',
 						value: 'getAll',
-						action: 'Get all documents',
+						action: 'Get many documents',
 					},
 					{
 						name: 'Anul',
@@ -166,6 +169,7 @@ export class Goldylocks implements INodeType {
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				displayOptions: {
 					show: {
 						resource: ['documentLine'],
@@ -183,9 +187,9 @@ export class Goldylocks implements INodeType {
 						action: 'Delete a document line',
 					},
 					{
-						name: 'Get All from Document',
+						name: 'Get Many',
 						value: 'getAll',
-						action: 'Get all lines from a document',
+						action: 'Get many lines from a document',
 					},
 				],
 				default: 'getAll',
@@ -240,21 +244,21 @@ export class Goldylocks implements INodeType {
 				},
 				options: [
 					{
-						displayName: 'Search Text (p)',
+						displayName: 'Search Text (P)',
 						name: 'p',
 						type: 'string',
 						default: '',
 						description: 'Text to search in item code or name',
 					},
 					{
-						displayName: 'Only Active (activos)',
+						displayName: 'Only Active (Activos)',
 						name: 'activos',
 						type: 'boolean',
 						default: true,
 						description: 'Whether to return only active items',
 					},
 					{
-						displayName: 'Family ID (f)',
+						displayName: 'Family ID (F)',
 						name: 'f',
 						type: 'string',
 						default: '',
@@ -265,7 +269,7 @@ export class Goldylocks implements INodeType {
 
 			// ------------------ ITEM: GET / DELETE ------------------
 			{
-				displayName: 'Item ID (p)',
+				displayName: 'Item ID (P)',
 				name: 'itemId',
 				type: 'string',
 				required: true,
@@ -281,7 +285,7 @@ export class Goldylocks implements INodeType {
 
 			// ------------------ ITEM: UPSERT ------------------
 			{
-				displayName: 'Item ID (cod_barras)',
+				displayName: 'Item ID (Cod_barras)',
 				name: 'cod_barras',
 				type: 'string',
 				required: true,
@@ -308,19 +312,7 @@ export class Goldylocks implements INodeType {
 				},
 				options: [
 					{
-						displayName: 'Name (nome)',
-						name: 'nome',
-						type: 'string',
-						default: '',
-					},
-					{
-						displayName: 'Family ID (familia)',
-						name: 'familia',
-						type: 'string',
-						default: '',
-					},
-					{
-						displayName: 'Cost Price (preco_custo)',
+						displayName: 'Cost Price (Preco_custo)',
 						name: 'preco_custo',
 						type: 'number',
 						typeOptions: {
@@ -329,14 +321,19 @@ export class Goldylocks implements INodeType {
 						default: 0,
 					},
 					{
-						displayName: 'Tax (imposto)',
-						name: 'imposto',
+						displayName: 'Family ID (Familia)',
+						name: 'familia',
 						type: 'string',
-						default: 'IVA 23%',
-						description: 'Full tax name, e.g., "IVA 23%"',
+						default: '',
 					},
 					{
-						displayName: 'Price Line 1 (psi1)',
+						displayName: 'Name (Nome)',
+						name: 'nome',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Price Line 1 (Psi1)',
 						name: 'psi1',
 						type: 'number',
 						typeOptions: {
@@ -346,7 +343,14 @@ export class Goldylocks implements INodeType {
 						description: 'Price for line 1, without tax',
 					},
 					{
-						displayName: 'Type (tipo)',
+						displayName: 'Tax (Imposto)',
+						name: 'imposto',
+						type: 'string',
+						default: 'IVA 23%',
+						description: 'Full tax name, e.g., "IVA 23%"',
+					},
+					{
+						displayName: 'Type (Tipo)',
 						name: 'tipo',
 						type: 'options',
 						options: [
@@ -374,7 +378,7 @@ export class Goldylocks implements INodeType {
 				},
 				options: [
 					{
-						displayName: 'Search Text (p)',
+						displayName: 'Search Text (P)',
 						name: 'p',
 						type: 'string',
 						default: '',
@@ -385,7 +389,7 @@ export class Goldylocks implements INodeType {
 
 			// ------------------ CUSTOMER: GET / DELETE ------------------
 			{
-				displayName: 'Customer ID (p)',
+				displayName: 'Customer ID (P)',
 				name: 'customerId',
 				type: 'string',
 				required: true,
@@ -401,7 +405,7 @@ export class Goldylocks implements INodeType {
 
 			// ------------------ CUSTOMER: UPSERT ------------------
 			{
-				displayName: 'Update Customer ID (p)',
+				displayName: 'Update Customer ID (P)',
 				name: 'customerIdUpdate',
 				type: 'string',
 				default: '',
@@ -427,26 +431,8 @@ export class Goldylocks implements INodeType {
 				},
 				options: [
 					{
-						displayName: 'Name (nome)',
-						name: 'nome',
-						type: 'string',
-						default: '',
-					},
-					{
-						displayName: 'Tax ID (nif)',
-						name: 'nif',
-						type: 'string',
-						default: '',
-					},
-					{
-						displayName: 'Address (morada)',
+						displayName: 'Address (Morada)',
 						name: 'morada',
-						type: 'string',
-						default: '',
-					},
-					{
-						displayName: 'Postal Code (cp)',
-						name: 'cp',
 						type: 'string',
 						default: '',
 					},
@@ -455,10 +441,29 @@ export class Goldylocks implements INodeType {
 						name: 'email',
 						type: 'string',
 						default: '',
+						placeholder: 'name@email.com',
 					},
 					{
-						displayName: 'Mobile Phone (telemovel)',
+						displayName: 'Mobile Phone (Telemovel)',
 						name: 'telemovel',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Name (Nome)',
+						name: 'nome',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Postal Code (Cp)',
+						name: 'cp',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Tax ID (Nif)',
+						name: 'nif',
 						type: 'string',
 						default: '',
 					},
@@ -479,7 +484,7 @@ export class Goldylocks implements INodeType {
 				typeOptions: {
 					minValue: 1,
 				},
-				default: 100,
+				default: 50,
 				description: 'Max number of results to return',
 			},
 			{
@@ -496,7 +501,7 @@ export class Goldylocks implements INodeType {
 				},
 				options: [
 					{
-						displayName: 'Status (estado)',
+						displayName: 'Status (Estado)',
 						name: 'estado',
 						type: 'options',
 						options: [
@@ -507,19 +512,19 @@ export class Goldylocks implements INodeType {
 						default: 'O',
 					},
 					{
-						displayName: 'Customer ID (p)',
+						displayName: 'Customer ID (P)',
 						name: 'p',
 						type: 'string',
 						default: '',
 					},
 					{
-						displayName: 'Start Date (data_inicial)',
+						displayName: 'Start Date (Data_inicial)',
 						name: 'data_inicial',
 						type: 'dateTime',
 						default: '',
 					},
 					{
-						displayName: 'End Date (data_final)',
+						displayName: 'End Date (Data_final)',
 						name: 'data_final',
 						type: 'dateTime',
 						default: '',
@@ -529,7 +534,7 @@ export class Goldylocks implements INodeType {
 
 			// ------------------ DOCUMENT: GET / ANUL ------------------
 			{
-				displayName: 'Document ID (p)',
+				displayName: 'Document ID (P)',
 				name: 'documentId',
 				type: 'string',
 				required: true,
@@ -543,7 +548,7 @@ export class Goldylocks implements INodeType {
 				description: 'The internal ID of the document',
 			},
 			{
-				displayName: 'Anulment Motive (m)',
+				displayName: 'Anulment Motive (M)',
 				name: 'motive',
 				type: 'string',
 				required: true,
@@ -572,7 +577,7 @@ export class Goldylocks implements INodeType {
 				},
 			},
 			{
-				displayName: 'Document Type ID (tipo_documento)',
+				displayName: 'Document Type ID (Tipo_documento)',
 				name: 'tipo_documento',
 				type: 'string',
 				required: true,
@@ -585,7 +590,7 @@ export class Goldylocks implements INodeType {
 				},
 			},
 			{
-				displayName: 'Document Serie (serie_documento)',
+				displayName: 'Document Serie (Serie_documento)',
 				name: 'serie_documento',
 				type: 'string',
 				required: true,
@@ -600,7 +605,7 @@ export class Goldylocks implements INodeType {
 
 			// ------------------ DOCUMENT LINE: GET ALL ------------------
 			{
-				displayName: 'Document ID (p)',
+				displayName: 'Document ID (P)',
 				name: 'documentId',
 				type: 'string',
 				required: true,
@@ -615,7 +620,7 @@ export class Goldylocks implements INodeType {
 
 			// ------------------ DOCUMENT LINE: CREATE ------------------
 			{
-				displayName: 'Document ID (id_documento)',
+				displayName: 'Document ID (Id_documento)',
 				name: 'id_documento',
 				type: 'string',
 				required: true,
@@ -628,7 +633,7 @@ export class Goldylocks implements INodeType {
 				},
 			},
 			{
-				displayName: 'Item ID (id_artigo)',
+				displayName: 'Item ID (Id_artigo)',
 				name: 'id_artigo',
 				type: 'string',
 				required: true,
@@ -641,7 +646,7 @@ export class Goldylocks implements INodeType {
 				},
 			},
 			{
-				displayName: 'Quantity (quantidade)',
+				displayName: 'Quantity (Quantidade)',
 				name: 'quantidade',
 				type: 'number',
 				required: true,
@@ -667,7 +672,7 @@ export class Goldylocks implements INodeType {
 				},
 				options: [
 					{
-						displayName: 'Price (preco)',
+						displayName: 'Price (Preco)',
 						name: 'preco',
 						type: 'number',
 						typeOptions: {
@@ -676,7 +681,7 @@ export class Goldylocks implements INodeType {
 						default: 0,
 					},
 					{
-						displayName: 'Discount (desconto)',
+						displayName: 'Discount (Desconto)',
 						name: 'desconto',
 						type: 'number',
 						typeOptions: {
@@ -689,7 +694,7 @@ export class Goldylocks implements INodeType {
 
 			// ------------------ DOCUMENT LINE: DELETE ------------------
 			{
-				displayName: 'Document Line ID (p)',
+				displayName: 'Document Line ID (P)',
 				name: 'lineId',
 				type: 'string',
 				required: true,
