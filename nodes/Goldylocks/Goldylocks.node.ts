@@ -712,7 +712,7 @@ export class Goldylocks implements INodeType {
 		const operation = this.getNodeParameter('operation', 0) as string;
 
 		const credentials = await this.getCredentials('goldylocksApi');
-		//const baseUrl = credentials.baseUrl as string;
+		const baseUrl = credentials.baseUrl as string;
 		const apiKey = credentials.apiKey as string;
 
 		for (let i = 0; i < items.length; i++) {
@@ -726,60 +726,48 @@ export class Goldylocks implements INodeType {
 						const qs: any = { ...filters, api: apiKey };
 
 						if (returnAll) {
-							const response = await this.helpers.httpRequestWithAuthentication.call(
-								this,
-								'goldylocksApi',
-								{
-									method: 'GET',
-									url: '/artigos/',
-									qs,
-									json: true,
-								},
-							);
+							const response = await this.helpers.httpRequest({
+								baseURL: baseUrl,
+								method: 'GET',
+								url: '/artigos/',
+								qs,
+								json: true,
+							});
 							returnData.push(...this.helpers.returnJsonArray(response));
 						} else {
 							qs.l = limit;
-							const response = await this.helpers.httpRequestWithAuthentication.call(
-								this,
-								'goldylocksApi',
-								{
-									method: 'GET',
-									url: '/artigos/',
-									qs,
-									json: true,
-								},
-							);
+							const response = await this.helpers.httpRequest({
+								baseURL: baseUrl,
+								method: 'GET',
+								url: '/artigos/',
+								qs,
+								json: true,
+							});
 							returnData.push(...this.helpers.returnJsonArray(response));
 						}
 					}
 
 					if (operation === 'get') {
 						const itemId = this.getNodeParameter('itemId', i) as string;
-						const response = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'goldylocksApi',
-							{
-								method: 'GET',
-								url: '/artigo/',
-								qs: { p: itemId, api: apiKey },
-								json: true,
-							},
-						);
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'GET',
+							url: '/artigo/',
+							qs: { p: itemId, api: apiKey },
+							json: true,
+						});
 						returnData.push(...this.helpers.returnJsonArray(response));
 					}
 
 					if (operation === 'delete') {
 						const itemId = this.getNodeParameter('itemId', i) as string;
-						const response = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'goldylocksApi',
-							{
-								method: 'GET',
-								url: '/eliminarartigo/',
-								qs: { p: itemId, api: apiKey },
-								json: true,
-							},
-						);
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'GET',
+							url: '/eliminarartigo/',
+							qs: { p: itemId, api: apiKey },
+							json: true,
+						});
 						returnData.push({ json: { success: true, response } });
 					}
 
@@ -788,18 +776,15 @@ export class Goldylocks implements INodeType {
 						const additionalFields = this.getNodeParameter('additionalFields', i, {}) as any;
 						const body = { cod_barras: codBarras, ...additionalFields };
 
-						const response = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'goldylocksApi',
-							{
-								method: 'POST',
-								url: '/guardarartigo/',
-								qs: { p: codBarras, api: apiKey }, // 'p' in query for update
-								body,
-								headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-								json: true,
-							},
-						);
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'POST',
+							url: '/guardarartigo/',
+							qs: { p: codBarras, api: apiKey },
+							body,
+							headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+							json: true,
+						});
 						returnData.push({ json: { success: true, response } });
 					}
 				}
@@ -808,46 +793,37 @@ export class Goldylocks implements INodeType {
 					if (operation === 'getAll') {
 						const filters = this.getNodeParameter('filters', i, {}) as any;
 						const qs: any = { ...filters, api: apiKey };
-						const response = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'goldylocksApi',
-							{
-								method: 'GET',
-								url: '/clientes/',
-								qs,
-								json: true,
-							},
-						);
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'GET',
+							url: '/clientes/',
+							qs,
+							json: true,
+						});
 						returnData.push(...this.helpers.returnJsonArray(response));
 					}
 
 					if (operation === 'get') {
 						const customerId = this.getNodeParameter('customerId', i) as string;
-						const response = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'goldylocksApi',
-							{
-								method: 'GET',
-								url: '/cliente/',
-								qs: { p: customerId, api: apiKey },
-								json: true,
-							},
-						);
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'GET',
+							url: '/cliente/',
+							qs: { p: customerId, api: apiKey },
+							json: true,
+						});
 						returnData.push(...this.helpers.returnJsonArray(response));
 					}
 
 					if (operation === 'delete') {
 						const customerId = this.getNodeParameter('customerId', i) as string;
-						const response = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'goldylocksApi',
-							{
-								method: 'GET',
-								url: '/eliminarcliente/',
-								qs: { p: customerId, api: apiKey },
-								json: true,
-							},
-						);
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'GET',
+							url: '/eliminarcliente/',
+							qs: { p: customerId, api: apiKey },
+							json: true,
+						});
 						returnData.push({ json: { success: true, response } });
 					}
 
@@ -859,18 +835,15 @@ export class Goldylocks implements INodeType {
 							qs.p = customerIdUpdate;
 						}
 
-						const response = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'goldylocksApi',
-							{
-								method: 'POST',
-								url: '/gerircliente/',
-								qs,
-								body: customerFields,
-								headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-								json: true,
-							},
-						);
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'POST',
+							url: '/gerircliente/',
+							qs,
+							body: customerFields,
+							headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+							json: true,
+						});
 						returnData.push({ json: { success: true, response } });
 					}
 				}
@@ -880,34 +853,27 @@ export class Goldylocks implements INodeType {
 						const filters = this.getNodeParameter('filters', i, {}) as any;
 						const limit = this.getNodeParameter('limit', i, 100) as number;
 
-						// The API uses a POST for this, which is unusual for a GET ALL
-						const body = { ...filters, limite: limit };
+						const qs = { ...filters, limite: limit, api: apiKey };
 
-						const response = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'goldylocksApi',
-							{
-								method: 'GET', // The doc says GET for this endpoint
-								url: '/documentos/',
-								qs: {...body, api: apiKey}, // Let's try passing as query params as per doc
-								json: true,
-							},
-						);
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'GET',
+							url: '/documentos/',
+							qs,
+							json: true,
+						});
 						returnData.push(...this.helpers.returnJsonArray(response));
 					}
 
 					if (operation === 'get') {
 						const documentId = this.getNodeParameter('documentId', i) as string;
-						const response = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'goldylocksApi',
-							{
-								method: 'GET',
-								url: '/documento/',
-								qs: { p: documentId, api: apiKey },
-								json: true,
-							},
-						);
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'GET',
+							url: '/documento/',
+							qs: { p: documentId, api: apiKey },
+							json: true,
+						});
 						returnData.push(...this.helpers.returnJsonArray(response));
 					}
 
@@ -917,18 +883,15 @@ export class Goldylocks implements INodeType {
 						const serie_documento = this.getNodeParameter('serie_documento', i) as string;
 
 						const body = { idCliente, tipo_documento, serie_documento };
-						const response = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'goldylocksApi',
-							{
-								method: 'POST',
-								url: '/criardocumento/',
-								qs: { api: apiKey },
-								body,
-								headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-								json: true,
-							},
-						);
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'POST',
+							url: '/criardocumento/',
+							qs: { api: apiKey },
+							body,
+							headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+							json: true,
+						});
 						returnData.push({ json: response });
 					}
 
@@ -936,16 +899,13 @@ export class Goldylocks implements INodeType {
 						const documentId = this.getNodeParameter('documentId', i) as string;
 						const motive = this.getNodeParameter('motive', i) as string;
 
-						const response = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'goldylocksApi',
-							{
-								method: 'GET',
-								url: '/anulardoc/',
-								qs: { p: documentId, m: motive, api: apiKey },
-								json: true,
-							},
-						);
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'GET',
+							url: '/anulardoc/',
+							qs: { p: documentId, m: motive, api: apiKey },
+							json: true,
+						});
 						returnData.push({ json: response });
 					}
 				}
@@ -953,18 +913,14 @@ export class Goldylocks implements INodeType {
 				if (resource === 'documentLine') {
 					if (operation === 'getAll') {
 						const documentId = this.getNodeParameter('documentId', i) as string;
-						// The doc shows a POST for this endpoint.
-						const response = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'goldylocksApi',
-							{
-								method: 'POST',
-								url: '/linhasdoc/',
-								qs: { p: documentId, api: apiKey },
-								headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-								json: true,
-							},
-						);
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'POST',
+							url: '/linhasdoc/',
+							qs: { p: documentId, api: apiKey },
+							headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+							json: true,
+						});
 						returnData.push(...this.helpers.returnJsonArray(response));
 					}
 
@@ -975,33 +931,27 @@ export class Goldylocks implements INodeType {
 						const lineFields = this.getNodeParameter('lineFields', i, {}) as any;
 
 						const body = { id_documento, id_artigo, quantidade, ...lineFields };
-						const response = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'goldylocksApi',
-							{
-								method: 'POST',
-								url: '/inserirlinha/',
-								qs: { api: apiKey },
-								body,
-								headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-								json: true,
-							},
-						);
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'POST',
+							url: '/inserirlinha/',
+							qs: { api: apiKey },
+							body,
+							headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+							json: true,
+						});
 						returnData.push({ json: response });
 					}
 
 					if (operation === 'delete') {
 						const lineId = this.getNodeParameter('lineId', i) as string;
-						const response = await this.helpers.httpRequestWithAuthentication.call(
-							this,
-							'goldylocksApi',
-							{
-								method: 'GET',
-								url: '/eliminarlinhadoc/',
-								qs: { p: lineId, api: apiKey },
-								json: true,
-							},
-						);
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'GET',
+							url: '/eliminarlinhadoc/',
+							qs: { p: lineId, api: apiKey },
+							json: true,
+						});
 						returnData.push({ json: response });
 					}
 				}
