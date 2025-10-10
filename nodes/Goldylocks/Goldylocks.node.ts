@@ -1200,7 +1200,7 @@ export class Goldylocks implements INodeType {
 								baseURL: baseUrl,
 								method: 'POST',
 								url: '/email/',
-								qs: { api: apiKey, p: id_documento, debug:1}, // p=1 for confirmation of email sending
+								qs: { api: apiKey, p: id_documento}, // p=1 for confirmation of email sending
 								body: formData,
 								headers: {
 									'Content-Type': 'application/x-www-form-urlencoded'
