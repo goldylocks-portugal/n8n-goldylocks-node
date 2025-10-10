@@ -5,7 +5,22 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![n8n Community Node](https://img.shields.io/badge/n8n-Community%20Node-green)](https://docs.n8n.io/integrations/community-nodes/)
 
-This repository contains an official n8n community node that integrates with the [Goldylocks ERP system](https://www.goldylocks.pt/). The node enables n8n workflows to interact with Goldylocks ERP data including customers, items, documents, and document lines.
+This repository contains an official n8n community node that integrates with the [Goldylocks ERP system](https://www.goldylocks.pt/), developed by Goldylocks Portugal. The node enables n8n workflows to interact with Goldylocks ERP data including customers, items, documents, and document lines.
+
+## About Goldylocks ERP
+
+[Goldylocks ERP](https://www.goldylocks.pt/) is a comprehensive enterprise resource planning solution developed by Goldylocks Portugal, a leading Portuguese software company specializing in business management solutions. The ERP system is designed to streamline business operations and enhance productivity for companies of various sizes across different industries.
+
+Goldylocks ERP features include:
+- Customer relationship management
+- Inventory and product management
+- Financial management and accounting
+- Document management and invoicing
+- Sales and purchase order processing
+- Production planning and management
+- Reporting and analytics
+
+The Goldylocks ERP API enables seamless integration with third-party applications like n8n, allowing businesses to automate complex workflows and connect their business processes with other systems.
 
 ## Features
 
