@@ -301,7 +301,8 @@ export class Goldylocks implements INodeType {
 						operation: ['upsert'],
 					},
 				},
-				description: 'The unique barcode for the item. If an item with this ID exists, it will be updated.',
+				description:
+					'The unique barcode for the item. If an item with this ID exists, it will be updated.',
 			},
 			{
 				displayName: 'Additional Fields',
@@ -709,6 +710,30 @@ export class Goldylocks implements INodeType {
 						},
 						default: 0,
 					},
+					{
+						displayName: 'Price Line (Linha Preço)',
+						name: 'linha',
+						type: 'number',
+						typeOptions: {
+							numberPrecision: 0,
+						},
+						default: 1,
+					},
+					{
+						displayName: 'Observations (Observação)',
+						name: 'observacao',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Associated Line ID (ID Linha Associada)',
+						name: 'id_movimento_artigo_associado',
+						type: 'number',
+						typeOptions: {
+							numberPrecision: 0,
+						},
+						default: 0,
+					},
 				],
 			},
 
@@ -855,8 +880,8 @@ export class Goldylocks implements INodeType {
 					if (operation === 'upsert') {
 						const customerIdUpdate = this.getNodeParameter('customerIdUpdate', i, '') as string;
 						const customerFields = this.getNodeParameter('customerFields', i, {}) as any;
-						const qs: {api: string, p?: string} = { api: apiKey };
-						if(customerIdUpdate) {
+						const qs: { api: string; p?: string } = { api: apiKey };
+						if (customerIdUpdate) {
 							qs.p = customerIdUpdate;
 						}
 
@@ -917,7 +942,7 @@ export class Goldylocks implements INodeType {
 							headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 							json: true,
 						});
-						returnData.push({ json: response });
+						returnData.push({ json: { new_document_id: response } });
 					}
 
 					if (operation === 'anul') {
@@ -950,7 +975,7 @@ export class Goldylocks implements INodeType {
 					}
 
 					if (operation === 'create') {
-						const id_documento = this.getNodeParameter('id_documento', i) as string;
+						const id_documento = this.getNodeParameter('id_documento', i) as number;
 						const id_artigo = this.getNodeParameter('id_artigo', i) as string;
 						const quantidade = this.getNodeParameter('quantidade', i) as number;
 						const lineFields = this.getNodeParameter('lineFields', i, {}) as any;
@@ -960,7 +985,7 @@ export class Goldylocks implements INodeType {
 							baseURL: baseUrl,
 							method: 'POST',
 							url: '/inserirlinha/',
-							qs: { api: apiKey },
+							qs: { api: apiKey, p: 1, obtermovimento: 1},
 							body,
 							headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 							json: true,
@@ -980,7 +1005,6 @@ export class Goldylocks implements INodeType {
 						returnData.push({ json: response });
 					}
 				}
-
 			} catch (error) {
 				if (this.continueOnFail()) {
 					returnData.push({ json: { error: error.message }, pairedItem: i });
