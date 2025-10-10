@@ -147,6 +147,11 @@ export class Goldylocks implements INodeType {
 						action: 'Create a document',
 					},
 					{
+						name: 'Fechar Encomenda',
+						value: 'fecharEncomenda',
+						action: 'Close an order',
+					},
+					{
 						name: 'Get',
 						value: 'get',
 						action: 'Get document details',
@@ -601,6 +606,21 @@ export class Goldylocks implements INodeType {
 						operation: ['create'],
 					},
 				},
+			},
+			// ------------------ DOCUMENT: FECHAR ENCOMENDA ------------------
+			{
+				displayName: 'Document ID (P)',
+				name: 'documentId',
+				type: 'string',
+				required: true,
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['document'],
+						operation: ['fecharEncomenda'],
+					},
+				},
+				description: 'The internal ID of the document to close',
 			},
 
 			// ------------------ DOCUMENT LINE: GET ALL ------------------
