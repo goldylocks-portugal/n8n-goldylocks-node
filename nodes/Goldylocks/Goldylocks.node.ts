@@ -49,6 +49,10 @@ export class Goldylocks implements INodeType {
 						value: 'documentLine',
 					},
 					{
+						name: 'Email',
+						value: 'email',
+					},
+					{
 						name: 'Item',
 						value: 'item',
 					},
@@ -198,6 +202,26 @@ export class Goldylocks implements INodeType {
 					},
 				],
 				default: 'getAll',
+			},
+			// Email Operations
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				noDataExpression: true,
+				displayOptions: {
+					show: {
+						resource: ['email'],
+					},
+				},
+				options: [
+					{
+						name: 'Send',
+						value: 'send',
+						action: 'Send an email',
+					},
+				],
+				default: 'send',
 			},
 
 			// ----------------------------------------
@@ -752,6 +776,127 @@ export class Goldylocks implements INodeType {
 				},
 				description: 'The internal ID of the document line (id_movimento)',
 			},
+
+			// ------------------ EMAIL: SEND ------------------
+			{
+				displayName: 'Sender Email',
+				name: 'remetente',
+				type: 'string',
+				required: true,
+				default: 'noreply@goldylocks.pt',
+				displayOptions: {
+					show: {
+						resource: ['email'],
+						operation: ['send'],
+					},
+				},
+				description: 'Email address of the sender',
+			},
+			{
+				displayName: 'Sender Name',
+				name: 'nomeRemetente',
+				type: 'string',
+				default: 'Goldylocks',
+				displayOptions: {
+					show: {
+						resource: ['email'],
+						operation: ['send'],
+					},
+				},
+				description: 'Display name of the sender',
+			},
+			{
+				displayName: 'Subject',
+				name: 'assunto',
+				type: 'string',
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['email'],
+						operation: ['send'],
+					},
+				},
+				description: 'Subject of the email',
+			},
+			{
+				displayName: 'Recipients',
+				name: 'enderecos',
+				type: 'string',
+				required: true,
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['email'],
+						operation: ['send'],
+					},
+				},
+				description: 'Comma-separated list of recipient email addresses (e.g., "email1@example.com,email2@example.com")',
+			},
+			{
+				displayName: 'Document Type ID',
+				name: 'tipo_documento',
+				type: 'string',
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['email'],
+						operation: ['send'],
+					},
+				},
+				description: 'ID of the document type for email templates',
+			},
+			{
+				displayName: 'Document ID',
+				name: 'id_documento',
+				type: 'string',
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['email'],
+						operation: ['send'],
+					},
+				},
+				description: 'Specific document ID to generate values for email template if needed',
+			},
+			{
+				displayName: 'HTML Message',
+				name: 'mensagem',
+				type: 'string',
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['email'],
+						operation: ['send'],
+					},
+				},
+				description: 'HTML content of the email if not using a template',
+			},
+			{
+				displayName: 'Plain Text Message',
+				name: 'mensagemSimples',
+				type: 'string',
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['email'],
+						operation: ['send'],
+					},
+				},
+				description: 'Plain text content of the email',
+			},
+			{
+				displayName: 'Attachments',
+				name: 'anexos',
+				type: 'string',
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['email'],
+						operation: ['send'],
+					},
+				},
+				description: 'Comma-separated list of URLs to files to attach to the email',
+			},
 		],
 	};
 
@@ -1016,6 +1161,54 @@ export class Goldylocks implements INodeType {
 							json: true,
 						});
 						returnData.push({ json: response });
+					}
+				}
+
+				if (resource === 'email') {
+					if (operation === 'send') {
+						const remetente = this.getNodeParameter('remetente', i) as string;
+						const nomeRemetente = this.getNodeParameter('nomeRemetente', i, 'Goldylocks') as string;
+						const assunto = this.getNodeParameter('assunto', i) as string;
+						const enderecos = this.getNodeParameter('enderecos', i) as string;
+						const tipo_documento = this.getNodeParameter('tipo_documento', i, '') as string;
+						const id_documento = this.getNodeParameter('id_documento', i, '') as string;
+						const mensagem = this.getNodeParameter('mensagem', i, '') as string;
+						const mensagemSimples = this.getNodeParameter('mensagemSimples', i, '') as string;
+						const anexos = this.getNodeParameter('anexos', i, '') as string;
+
+						// Prepare the form data for the email
+						const formData: any = {
+							remetente,
+							nomeRemetente,
+							assunto,
+							enderecos:enderecos.split(','),
+							id_modelo_email: 0
+						};
+
+						// Add optional fields if they exist
+						if (tipo_documento) formData.tipo_documento = tipo_documento;
+						if (id_documento) formData.id_documento = id_documento;
+						if (mensagem) formData.mensagem = mensagem;
+						if (mensagemSimples) formData.mensagemSimples = mensagemSimples;
+						if (anexos) formData.anexos = anexos;
+
+						// Send the email request using form data
+						const response = await this.helpers.httpRequestWithAuthentication.call(
+							this,
+							'goldylocksApi',
+							{
+								baseURL: baseUrl,
+								method: 'POST',
+								url: '/email/',
+								qs: { api: apiKey, p: id_documento, debug:1}, // p=1 for confirmation of email sending
+								body: formData,
+								headers: {
+									'Content-Type': 'application/x-www-form-urlencoded'
+								},
+								json: true,
+							}
+						);
+						returnData.push({ json: { success: true, response } });
 					}
 				}
 			} catch (error) {
