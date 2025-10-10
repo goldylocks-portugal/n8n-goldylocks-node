@@ -958,6 +958,19 @@ export class Goldylocks implements INodeType {
 						});
 						returnData.push({ json: response });
 					}
+
+					if (operation === 'fecharEncomenda') {
+						const documentId = this.getNodeParameter('documentId', i) as string;
+
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'GET',
+							url: '/fechardocumento/',
+							qs: { p: documentId, api: apiKey },
+							json: true,
+						});
+						returnData.push({ json: response });
+					}
 				}
 
 				if (resource === 'documentLine') {
