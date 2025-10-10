@@ -8,7 +8,7 @@ import {
 export class GoldylocksApi implements ICredentialType {
 	name = 'goldylocksApi';
 	displayName = 'Goldylocks API';
-	documentationUrl = 'https://app.goldylocks.pt/empresademonstrativa/api/';
+	documentationUrl = 'https://www.goldylocks.pt/integracoes/api-erp/';
 	properties: INodeProperties[] = [
 		{
 			displayName: 'Base URL',

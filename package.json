@@ -1,12 +1,20 @@
 {
   "name": "n8n-nodes-goldylocks",
   "version": "1.0.0",
-  "description": "n8n community node for Goldylocks ERP integration",
+  "description": "n8n community node for Goldylocks ERP integration allowing workflow automation for customer, item, document, and email management",
   "keywords": [
     "n8n-community-node-package",
+    "n8n",
+    "n8n-community-node",
     "goldylocks",
     "erp",
-    "integration"
+    "integration",
+    "workflow",
+    "automation",
+    "customer-management",
+    "document-management",
+    "item-management",
+    "email-automation"
   ],
   "license": "MIT",
   "homepage": "https://github.com/goldylocks-portugal/n8n-goldylocks-node",
@@ -52,5 +60,8 @@
   },
   "peerDependencies": {
     "n8n-workflow": "*"
+  },
+  "bugs": {
+    "url": "https://github.com/goldylocks-portugal/n8n-goldylocks-node/issues"
   }
 }

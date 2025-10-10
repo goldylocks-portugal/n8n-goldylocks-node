@@ -146,6 +146,11 @@ export class Goldylocks implements INodeType {
 				},
 				options: [
 					{
+						name: 'Anul',
+						value: 'anul',
+						action: 'Anul a document',
+					},
+					{
 						name: 'Create',
 						value: 'create',
 						action: 'Create a document',
@@ -164,11 +169,6 @@ export class Goldylocks implements INodeType {
 						name: 'Get Many',
 						value: 'getAll',
 						action: 'Get many documents',
-					},
-					{
-						name: 'Anul',
-						value: 'anul',
-						action: 'Anul a document',
 					},
 				],
 				default: 'getAll',
@@ -717,11 +717,11 @@ export class Goldylocks implements INodeType {
 				},
 				options: [
 					{
-						displayName: 'Price (Preco)',
-						name: 'preco',
+						displayName: 'Associated Line ID (ID Linha Associada)',
+						name: 'id_movimento_artigo_associado',
 						type: 'number',
 						typeOptions: {
-							numberPrecision: 5,
+							numberPrecision: 0,
 						},
 						default: 0,
 					},
@@ -735,6 +735,21 @@ export class Goldylocks implements INodeType {
 						default: 0,
 					},
 					{
+						displayName: 'Observations (Observação)',
+						name: 'observacao',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Price (Preco)',
+						name: 'preco',
+						type: 'number',
+						typeOptions: {
+							numberPrecision: 5,
+						},
+						default: 0,
+					},
+					{
 						displayName: 'Price Line (Linha Preço)',
 						name: 'linha',
 						type: 'number',
@@ -742,21 +757,6 @@ export class Goldylocks implements INodeType {
 							numberPrecision: 0,
 						},
 						default: 1,
-					},
-					{
-						displayName: 'Observations (Observação)',
-						name: 'observacao',
-						type: 'string',
-						default: '',
-					},
-					{
-						displayName: 'Associated Line ID (ID Linha Associada)',
-						name: 'id_movimento_artigo_associado',
-						type: 'number',
-						typeOptions: {
-							numberPrecision: 0,
-						},
-						default: 0,
 					},
 				],
 			},
