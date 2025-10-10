@@ -146,9 +146,9 @@ export class Goldylocks implements INodeType {
 				},
 				options: [
 					{
-						name: 'Anul',
+						name: 'Anular Documento',
 						value: 'anul',
-						action: 'Anul a document',
+						action: 'Anular a documento',
 					},
 					{
 						name: 'Create',
@@ -169,6 +169,11 @@ export class Goldylocks implements INodeType {
 						name: 'Get Many',
 						value: 'getAll',
 						action: 'Get many documents',
+					},
+					{
+						name: 'Update Customer',
+						value: 'updateCustomer',
+						action: 'Update customer information for a document',
 					},
 				],
 				default: 'getAll',
@@ -496,6 +501,140 @@ export class Goldylocks implements INodeType {
 						name: 'nif',
 						type: 'string',
 						default: '',
+					},
+				],
+			},
+
+
+			// ------------------ DOCUMENT: UPDATE CUSTOMER ------------------
+			{
+				displayName: 'Document ID',
+				name: 'documentId',
+				type: 'string',
+				required: true,
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['document'],
+						operation: ['updateCustomer'],
+					},
+				},
+				description: 'The ID of the document for which to update customer information',
+			},
+			{
+				displayName: 'Customer Data',
+				name: 'customerData',
+				type: 'collection',
+				placeholder: 'Add Customer Field',
+				default: {},
+				displayOptions: {
+					show: {
+						resource: ['document'],
+						operation: ['updateCustomer'],
+					},
+				},
+				options: [
+					{
+						displayName: 'Customer ID',
+						name: 'id',
+						type: 'string',
+						default: '0',
+						description: 'ID of customer, 0 to create new customer',
+					},
+					{
+						displayName: 'Tax ID (NIF)',
+						name: 'nif',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Name',
+						name: 'nome',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Address',
+						name: 'morada',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Address 2',
+						name: 'morada2',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Postal Code',
+						name: 'cp',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Mobile Phone',
+						name: 'telemovel',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Phone',
+						name: 'telefone',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Country Code',
+						name: 'codigoPais',
+						type: 'string',
+						default: 'PT',
+					},
+					{
+						displayName: 'Country',
+						name: 'pais',
+						type: 'string',
+						default: 'Portugal',
+					},
+					{
+						displayName: 'Email',
+						name: 'email',
+						type: 'string',
+						default: '',
+						placeholder: 'name@email.com',
+					},
+					{
+						displayName: 'Default Tax',
+						name: 'imposto',
+						type: 'string',
+						default: 'IVA 23%',
+					},
+					{
+						displayName: 'Additional Address ID',
+						name: 'id_morada_adicional',
+						type: 'string',
+						default: '0',
+					},
+				],
+			},
+			{
+				displayName: 'Options',
+				name: 'options',
+				type: 'collection',
+				placeholder: 'Add Option',
+				default: {},
+				displayOptions: {
+					show: {
+						resource: ['document'],
+						operation: ['updateCustomer'],
+					},
+				},
+				options: [
+					{
+						displayName: 'Update Lines',
+						name: 'alterarlinhas',
+						type: 'boolean',
+						default: false,
+						description: 'Whether to adapt Document Lines to Customer',
 					},
 				],
 			},
@@ -1115,6 +1254,35 @@ export class Goldylocks implements INodeType {
 							json: true,
 						});
 						returnData.push({ json: response });
+					}
+
+					if (operation === 'updateCustomer') {
+						const documentId = this.getNodeParameter('documentId', i) as string;
+						const customerData = this.getNodeParameter('customerData', i, {}) as any;
+						const options = this.getNodeParameter('options', i, {}) as any;
+
+						const qs: any = {
+							api: apiKey,
+							p: documentId,
+						};
+
+						if (options.alterarlinhas) {
+							qs.alterarlinhas = 1;
+						}
+
+						// Add customer data fields to query string as well, as they are also sent as form data
+						Object.assign(qs, customerData);
+
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'POST',
+							url: '/alterarclientedocumento/',
+							qs,
+							body: customerData,
+							headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+							json: true,
+						});
+						returnData.push({ json: { success: true, response } });
 					}
 				}
 
