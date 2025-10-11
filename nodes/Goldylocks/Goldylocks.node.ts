@@ -175,6 +175,11 @@ export class Goldylocks implements INodeType {
 						value: 'updateCustomer',
 						action: 'Update customer information for a document',
 					},
+					{
+						name: 'Change Document Status',
+						value: 'changeStatus',
+						action: 'Change the status of a document',
+					},
 				],
 				default: 'getAll',
 			},
@@ -786,6 +791,48 @@ export class Goldylocks implements INodeType {
 				},
 				description: 'The internal ID of the document to close',
 			},
+			// ------------------ DOCUMENT: CHANGE STATUS ------------------
+			{
+				displayName: 'Document ID (P)',
+				name: 'documentId',
+				type: 'string',
+				required: true,
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['document'],
+						operation: ['changeStatus'],
+					},
+				},
+				description: 'The ID of the document to change status',
+			},
+			{
+				displayName: 'New Status (Estado)',
+				name: 'newStatus',
+				type: 'string',
+				required: true,
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['document'],
+						operation: ['changeStatus'],
+					},
+				},
+				description: 'The new status ID to apply to the document',
+			},
+			{
+				displayName: 'Show Print (Impressao)',
+				name: 'showPrint',
+				type: 'boolean',
+				default: false,
+				displayOptions: {
+					show: {
+						resource: ['document'],
+						operation: ['changeStatus'],
+					},
+				},
+				description: 'Whether to show the document print after status change',
+			},
 
 			// ------------------ DOCUMENT LINE: GET ALL ------------------
 			{
@@ -1283,6 +1330,28 @@ export class Goldylocks implements INodeType {
 							json: true,
 						});
 						returnData.push({ json: { success: true, response } });
+					}
+
+					if (operation === 'changeStatus') {
+						const documentId = this.getNodeParameter('documentId', i) as string;
+						const newStatus = this.getNodeParameter('newStatus', i) as string;
+						const showPrint = this.getNodeParameter('showPrint', i) as boolean;
+
+						const printValue = showPrint ? 1 : 0;
+
+						const response = await this.helpers.httpRequest({
+							baseURL: baseUrl,
+							method: 'GET',
+							url: '/alterarestadodocumento/',
+							qs: { 
+								api: apiKey,
+								p: documentId,
+								estado: newStatus,
+								impressao: printValue
+							},
+							json: true,
+						});
+						returnData.push({ json: response });
 					}
 				}
 
