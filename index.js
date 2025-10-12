@@ -4,4 +4,10 @@
 module.exports = {
 	// Export the node class so n8n can load it
 	// This file is required for n8n to properly load the node package
+	nodes: [
+		require('./dist/nodes/Goldylocks/Goldylocks.node.js')
+	],
+	credentials: [
+		require('./dist/credentials/GoldylocksApi.credentials.js')
+	]
 };
