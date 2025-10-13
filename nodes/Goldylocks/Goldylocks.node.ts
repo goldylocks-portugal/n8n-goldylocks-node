@@ -53,6 +53,10 @@ export class Goldylocks implements INodeType {
 						value: 'email',
 					},
 					{
+						name: 'Family',
+						value: 'familia',
+					},
+					{
 						name: 'Item',
 						value: 'item',
 					},
@@ -232,6 +236,51 @@ export class Goldylocks implements INodeType {
 					},
 				],
 				default: 'send',
+			},
+			// Family Operations
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				noDataExpression: true,
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+					},
+				},
+				options: [
+					{
+						name: 'Create',
+						value: 'create',
+						action: 'Create a family',
+					},
+					{
+						name: 'Edit',
+						value: 'edit',
+						action: 'Edit a family',
+					},
+					{
+						name: 'Delete',
+						value: 'delete',
+						action: 'Delete a family',
+					},
+					{
+						name: 'Get All',
+						value: 'getAll',
+						action: 'Get all families',
+					},
+					{
+						name: 'Get Image/Thumbnail',
+						value: 'getImage',
+						action: 'Get family image/thumbnail',
+					},
+					{
+						name: 'Get Creation Order',
+						value: 'getCreationOrder',
+						action: 'Get family creation order',
+					},
+				],
+				default: 'getAll',
 			},
 
 			// ----------------------------------------
@@ -1083,6 +1132,222 @@ export class Goldylocks implements INodeType {
 				},
 				description: 'Comma-separated list of URLs to files to attach to the email',
 			},
+
+			// ------------------ FAMILY: CREATE ------------------
+			{
+				displayName: 'Family Name (D)',
+				name: 'familyName',
+				type: 'string',
+				required: true,
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+						operation: ['create'],
+					},
+				},
+				description: 'New family name',
+			},
+			{
+				displayName: 'Parent Family ID (P)',
+				name: 'parentFamilyId',
+				type: 'string',
+				default: '0',
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+						operation: ['create'],
+					},
+				},
+				description: 'Parent family ID (0 for root)',
+			},
+			{
+				displayName: 'Family ID (ID_Familia) [Optional]',
+				name: 'familyId',
+				type: 'string',
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+						operation: ['create'],
+					},
+				},
+				description: 'ID of family to create (optional)',
+			},
+			{
+				displayName: 'Allow Duplicates (Permitir_duplicadas) [Optional]',
+				name: 'allowDuplicates',
+				type: 'boolean',
+				default: false,
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+						operation: ['create'],
+					},
+				},
+				description: 'Allow families with the same name in the same parent family',
+			},
+			{
+				displayName: 'Available in POS (Disponivel_pos)',
+				name: 'availableInPOS',
+				type: 'boolean',
+				default: true,
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+						operation: ['create'],
+					},
+				},
+				description: 'Whether the family is available in POS (0 = unavailable, 1 = available)',
+			},
+
+			// ------------------ FAMILY: EDIT ------------------
+			{
+				displayName: 'Family ID (ID)',
+				name: 'familyId',
+				type: 'string',
+				required: true,
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+						operation: ['edit'],
+					},
+				},
+				description: 'ID of the family to edit',
+			},
+			{
+				displayName: 'New Family Name (F)',
+				name: 'newFamilyName',
+				type: 'string',
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+						operation: ['edit'],
+					},
+				},
+				description: 'New family name',
+			},
+			{
+				displayName: 'New Parent Family ID (FP)',
+				name: 'newParentFamilyId',
+				type: 'string',
+				default: '0',
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+						operation: ['edit'],
+					},
+				},
+				description: 'New parent family ID',
+			},
+			{
+				displayName: 'Available in POS (Disponivel_pos)',
+				name: 'availableInPOS',
+				type: 'boolean',
+				default: true,
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+						operation: ['edit'],
+					},
+				},
+				description: 'Whether the family is available in POS',
+			},
+
+			// ------------------ FAMILY: DELETE ------------------
+			{
+				displayName: 'Family ID (P)',
+				name: 'familyId',
+				type: 'string',
+				required: true,
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+						operation: ['delete'],
+					},
+				},
+				description: 'ID of the family to remove',
+			},
+
+			// ------------------ FAMILY: GET ALL ------------------
+			{
+				displayName: 'Filters',
+				name: 'filters',
+				type: 'collection',
+				placeholder: 'Add Filter',
+				default: {},
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+						operation: ['getAll'],
+					},
+				},
+				options: [
+					{
+						displayName: 'Parent Family ID (P)',
+						name: 'p',
+						type: 'string',
+						default: '0',
+						description: 'Parent family ID, 0 for root',
+					},
+					{
+						displayName: 'Available in POS (Disponivel_pos)',
+						name: 'disponivel_pos',
+						type: 'boolean',
+						default: true,
+						description: 'True to get only families available in POS',
+					},
+				],
+			},
+
+			// ------------------ FAMILY: GET IMAGE/THUMBNAIL ------------------
+			{
+				displayName: 'Family ID (P)',
+				name: 'familyId',
+				type: 'string',
+				required: true,
+				default: '',
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+						operation: ['getImage'],
+					},
+				},
+				description: 'ID of the family',
+			},
+			{
+				displayName: 'Get as Thumbnail',
+				name: 'thumbnail',
+				type: 'boolean',
+				default: true,
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+						operation: ['getImage'],
+					},
+				},
+				description: 'Whether to get as thumbnail',
+			},
+			{
+				displayName: 'Get as Base64 [Optional]',
+				name: 'base64',
+				type: 'boolean',
+				default: false,
+				displayOptions: {
+					show: {
+						resource: ['familia'],
+						operation: ['getImage'],
+					},
+				},
+				description: 'Whether to get image as base64',
+			},
+
+			// ------------------ FAMILY: GET CREATION ORDER ------------------
+			// (No additional fields needed for this operation)
+
 		],
 	};
 
@@ -1400,6 +1665,137 @@ export class Goldylocks implements INodeType {
 						returnData.push({ json: response });
 					}
 				}
+						if (resource === 'familia') {
+							if (operation === 'create') {
+								const familyName = this.getNodeParameter('familyName', i) as string;
+								const parentFamilyId = this.getNodeParameter('parentFamilyId', i, '0') as string;
+								const familyId = this.getNodeParameter('familyId', i, '') as string;
+								const allowDuplicates = this.getNodeParameter('allowDuplicates', i, false) as boolean;
+								const availableInPOS = this.getNodeParameter('availableInPOS', i, true) as boolean;
+
+								const qs: any = {
+									d: familyName,
+									p: parentFamilyId,
+									api: apiKey,
+								};
+
+								if (familyId) {
+									qs.id_familia = familyId;
+								}
+								qs.permitir_duplicadas = allowDuplicates ? 1 : 0;
+								qs.disponivel_pos = availableInPOS ? 1 : 0;
+
+								const response = await this.helpers.httpRequest({
+									baseURL: baseUrl,
+									method: 'GET',
+									url: '/inserirfamilia/',
+									qs,
+									json: true,
+								});
+								returnData.push({ json: { success: true, response } });
+							}
+
+							if (operation === 'edit') {
+								const familyId = this.getNodeParameter('familyId', i) as string;
+								const newFamilyName = this.getNodeParameter('newFamilyName', i, '') as string;
+								const newParentFamilyId = this.getNodeParameter('newParentFamilyId', i, '0') as string;
+								const availableInPOS = this.getNodeParameter('availableInPOS', i, true) as boolean;
+
+								const qs: any = {
+									id: familyId,
+									f: newFamilyName || undefined,
+									fp: newParentFamilyId,
+									disponivel_pos: availableInPOS ? 1 : 0,
+									api: apiKey,
+								};
+
+								const response = await this.helpers.httpRequest({
+									baseURL: baseUrl,
+									method: 'GET',
+									url: '/editarfamilia/',
+									qs,
+									json: true,
+								});
+								returnData.push({ json: { success: true, response } });
+							}
+
+							if (operation === 'delete') {
+								const familyId = this.getNodeParameter('familyId', i) as string;
+
+								const qs = {
+									p: familyId,
+									api: apiKey,
+								};
+
+								const response = await this.helpers.httpRequest({
+									baseURL: baseUrl,
+									method: 'GET',
+									url: '/eliminarfamilia/',
+									qs,
+									json: true,
+								});
+								returnData.push({ json: { success: true, response } });
+							}
+
+							if (operation === 'getAll') {
+								const filters = this.getNodeParameter('filters', i, {}) as any;
+
+								const qs: any = {
+									p: filters.p || '0',
+									disponivel_pos: filters.disponivel_pos ? 1 : 0,
+									api: apiKey,
+								};
+
+								const response = await this.helpers.httpRequest({
+									baseURL: baseUrl,
+									method: 'GET',
+									url: '/familias/',
+									qs,
+									json: true,
+								});
+								returnData.push(...this.helpers.returnJsonArray(response));
+							}
+
+							if (operation === 'getImage') {
+								const familyId = this.getNodeParameter('familyId', i) as string;
+								const thumbnail = this.getNodeParameter('thumbnail', i, true) as boolean;
+								const base64 = this.getNodeParameter('base64', i, false) as boolean;
+
+								const qs: any = {
+									p: familyId,
+									thumbnail: thumbnail ? 1 : 0,
+									api: apiKey,
+								};
+
+								if (base64) {
+									qs.base64 = 1;
+								}
+
+								const response = await this.helpers.httpRequest({
+									baseURL: baseUrl,
+									method: 'GET',
+									url: '/imagemfamilia/',
+									qs,
+									json: true,
+								});
+								returnData.push({ json: response });
+							}
+
+							if (operation === 'getCreationOrder') {
+								const qs = {
+									api: apiKey,
+								};
+
+								const response = await this.helpers.httpRequest({
+									baseURL: baseUrl,
+									method: 'GET',
+									url: '/obterarraycriacaofamilias/',
+									qs,
+									json: true,
+								});
+								returnData.push({ json: response });
+							}
+						}
 
 				if (resource === 'email') {
 					if (operation === 'send') {

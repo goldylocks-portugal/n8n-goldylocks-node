@@ -29,6 +29,7 @@ The Goldylocks ERP API enables seamless integration with third-party application
 - **Document Management**: Create, retrieve, list, and cancel documents with support for filtering by status and date range
 - **Document Line Management**: Create, retrieve, and delete document lines with quantity and pricing information
 - **Email Operations**: Send emails with document templates directly from workflows
+- **Family Management**: Create, edit, delete, get all families, retrieve family images/thumbnails, and get creation order with support for hierarchical organization
 
 ### Supported Operations
 
@@ -54,6 +55,47 @@ The Goldylocks ERP API enables seamless integration with third-party application
 #### Email
 - **Operations**: Send emails with document templates
 - **Fields**: Recipients, subject, message content, attachments
+
+#### Families
+- **Operations**: Create, Edit, Delete, Get All, Get Image/Thumbnail, Get Creation Order
+
+**Create Family**
+- **Fields**:
+  - Family Name (d): The name of the new family
+  - Parent Family ID (p): The ID of the parent family (0 for root families)
+  - Family ID (id_familia): Optional custom ID for the family
+  - Allow Duplicates (permitir_duplicadas): Whether to allow families with the same name in the same parent family (0 = no, 1 = yes)
+  - Available in POS (disponivel_pos): Whether the family is available in Point of Sale (0 = no, 1 = yes)
+- Creates a new family in the hierarchy with specified parameters
+
+**Edit Family**
+- **Fields**:
+  - Family ID (id): The ID of the family to edit
+  - New Family Name (f): The new name for the family (optional)
+  - New Parent Family ID (fp): The new parent family ID (optional)
+  - Available in POS (disponivel_pos): Whether the family is available in Point of Sale (0 = no, 1 = yes)
+- Updates an existing family with new information
+
+**Delete Family**
+- **Fields**: Family ID (p)
+- Removes a family from the system
+
+**Get All Families**
+- **Filters**:
+  - Parent Family ID (p): Filter by parent family ID (0 for root families)
+  - Available in POS (disponivel_pos): Filter by POS availability (true = available, false = not available)
+- Retrieves a list of all families based on specified filters
+
+**Get Family Image/Thumbnail**
+- **Fields**:
+  - Family ID (p): The ID of the family whose image is requested
+  - Get as Thumbnail (thumbnail): Whether to retrieve as thumbnail (true = thumbnail, false = full size)
+  - Get as Base64 (base64): Whether to retrieve image as base64 encoded string (optional)
+- Retrieves the image associated with a family in the requested format
+
+**Get Creation Order**
+- No additional fields required
+- Returns the order in which families should be created to maintain hierarchy
 
 ## Prerequisites
 
@@ -106,6 +148,14 @@ Then restart your n8n instance.
 2. Set Resource to "Document" and Operation to "Create"
 3. Specify the Customer ID, Document Type ID, and Document Series
 4. The node will return the new document ID
+
+### Managing Families
+1. Add the Goldylocks node to your workflow
+2. Set Resource to "Family" and select the appropriate Operation (Create, Edit, Get All, etc.)
+3. Fill in the required fields based on the operation:
+   - For Create: Provide Family Name (d) and Parent Family ID (p)
+   - For Get All: Optionally specify filters like Parent Family ID (p)
+4. The node will perform the specified family operation
 
 ## Best Practices
 
