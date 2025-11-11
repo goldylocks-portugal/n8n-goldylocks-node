@@ -150,9 +150,9 @@ export class Goldylocks implements INodeType {
 				},
 				options: [
 					{
-						name: 'Anular Documento',
+						name: 'Cancel Document',
 						value: 'anul',
-						action: 'Anular a documento',
+						action: 'Cancel a document',
 					},
 					{
 						name: 'Change Document Status',
@@ -160,14 +160,14 @@ export class Goldylocks implements INodeType {
 						action: 'Change the status of a document',
 					},
 					{
+						name: 'Close an Order',
+						value: 'fecharEncomenda',
+						action: 'Close an order',
+					},
+					{
 						name: 'Create',
 						value: 'create',
 						action: 'Create a document',
-					},
-					{
-						name: 'Fechar Encomenda',
-						value: 'fecharEncomenda',
-						action: 'Close an order',
 					},
 					{
 						name: 'Get',
@@ -1692,7 +1692,7 @@ export class Goldylocks implements INodeType {
 								baseURL: baseUrl,
 								method: 'GET',
 								url: '/alterarestadodocumento/',
-								qs: { 
+								qs: {
 									api: apiKey,
 									p: documentId,
 									estado: newStatus,
