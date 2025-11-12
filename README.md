@@ -44,8 +44,10 @@ The Goldylocks ERP API enables seamless integration with third-party application
 - **Filters**: Search text (p) for Get All operations
 
 #### Documents
-- **Operations**: Create, Get, Get All, Anul (cancel), Fechar Encomenda (close order)
+- **Operations**: Create, Get, Get All, Anul (cancel), Fechar Encomenda (close order), Change Document Status, Update Customer
 - **Create fields**: Customer ID, document type, document series
+- **Change Document Status fields**: Document ID, New Status ID, Show Print option
+- **Update Customer fields**: Document ID, Customer data (ID, Name, Tax ID, Address, Postal Code, Email, Phone, Mobile Phone, Country, Country Code, Default Tax), Update Lines option
 - **Filters**: Status (estado), customer ID (p), date range (data_inicial/data_final) for Get All operations
 
 #### Document Lines
@@ -148,6 +150,21 @@ Then restart your n8n instance.
 2. Set Resource to "Document" and Operation to "Create"
 3. Specify the Customer ID, Document Type ID, and Document Series
 4. The node will return the new document ID
+
+### Changing Document Status
+1. Add the Goldylocks node to your workflow
+2. Set Resource to "Document" and Operation to "Change Document Status"
+3. Specify the Document ID and the New Status ID
+4. Optionally set the Show Print option to display the document after status change
+5. The node will update the document status accordingly
+
+### Updating Customer Information for a Document
+1. Add the Goldylocks node to your workflow
+2. Set Resource to "Document" and Operation to "Update Customer"
+3. Specify the Document ID
+4. Fill in the customer data fields you want to update (ID, Name, Tax ID, Address, etc.)
+5. Optionally set the Update Lines option to adapt Document Lines to Customer
+6. The node will update the customer information for the specified document
 
 ### Managing Families
 1. Add the Goldylocks node to your workflow
